@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
         setContent {
                 val pic=viewModel.pic.collectAsState()
             MyApplicationTheme {
-                Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceAround) {
+                Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(60.dp)) {
                     ImageContainer(res = listOfPics.list[pic.value].first)
                     TextColumns(title=listOfPics.list[pic.value].second)
                     ButtonRows(changePositive = {viewModel.changePositive()}, changeNegative = {viewModel.changeNegative()})
@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ImageContainer(modifier:Modifier=Modifier, @DrawableRes res:Int){
     Surface(modifier=modifier.shadow(16.dp)) {
-        Image(painter = painterResource(id = res),contentDescription ="glass",modifier=modifier.padding(16.dp))
+        Image(painter = painterResource(id = res),contentDescription ="glass",modifier=modifier.padding(16.dp).height(300.dp),)
     }
 
 }
@@ -90,7 +90,7 @@ fun TextColumns(modifier:Modifier=Modifier,title:Int){
 @Composable
 fun GreetingPreview() {
     MyApplicationTheme {
-        Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceAround) {
+        Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(60.dp)) {
             ImageContainer(res = R.drawable.glass)
             TextColumns(title=R.string.glass)
             ButtonRows(changePositive = {}, changeNegative = {})
