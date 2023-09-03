@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="glass">A cup of glass</string>
+    <string name="glass_author">me (2023)</string>
     <string name="scream">The Scream</string>
+    <string name="scream_author">Edvard Munch (1893)</string>
+    <string name="ninth_wave">The Ninth wave</string>
+    <string name="ninth_wave_author">Ivan Aivazovsky (1850)</string>
+    <string name="sadko">Sadko</string>
+    <string name="sadko_author">Ilya Repin (1876)</string>
 </resources>
