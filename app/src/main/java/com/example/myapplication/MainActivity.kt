@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.myapplication
 
 import android.os.Bundle
@@ -7,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +18,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -50,7 +55,6 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
          val viewModel: PictureViewModel by viewModels()
@@ -77,10 +81,7 @@ class MainActivity : ComponentActivity() {
                         Surface(modifier=Modifier.fillMaxSize(), color = Color(0f,0f,0f,0.3f)) {
 
                         }
-                        OutlinedTextField(value = "", onValueChange ={}, label = { Text(text = "Search art")},modifier= Modifier
-                            .background(Color(255, 255, 255))
-                            .fillMaxWidth()
-                            .padding(16.dp) )
+                        SearchBar(onClick={isSearch=false})
 
 
 
@@ -127,6 +128,43 @@ fun TextColumns(modifier:Modifier=Modifier,title:Int,author:Int){
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchBar(modifier:Modifier=Modifier,onClick:()->Unit){
+    var input by remember {
+        mutableStateOf("")
+    }
+    Column {
+
+
+        OutlinedTextField(leadingIcon = {
+            Icon(Icons.Default.Search, contentDescription =null,modifier=modifier.clickable(onClick=onClick) )
+        }, value = input, onValueChange ={input=it}, label = { Text(text = "Search art")},modifier= Modifier
+            .background(Color(255, 255, 255))
+            .fillMaxWidth(),
+            trailingIcon = {
+
+                    Icon( Icons.Default.Close, contentDescription =null )
+
+
+            })
+        LazyColumn{
+            items(listOfPics.list){
+                val text= stringResource(id = it.title)
+                if (text.startsWith(input) && input!="") {
+                    Row(modifier= Modifier
+                        .background(Color(255, 255, 255))
+                        .fillMaxWidth()) {
+
+                        Text(text = text,modifier=Modifier.padding(8.dp))
+                    }
+                }
+
+            }
+
+        }
+    }
+}
+
 @Preview(showBackground = true,showSystemUi=true)
 @Composable
 fun GreetingPreview() {
@@ -146,14 +184,9 @@ fun GreetingPreview() {
                 Surface(modifier=Modifier.fillMaxSize(), color = Color(0f,0f,0f,0.3f)) {
 
                 }
-            OutlinedTextField(leadingIcon = {
-                                            Icon(Icons.Default.Search, contentDescription =null )
-            }, value = "", onValueChange ={}, label = { Text(text = "Search art")},modifier= Modifier
-                .background(Color(255, 255, 255))
-                .fillMaxWidth(),
-                trailingIcon = {
-                    Icon( Icons.Default.Close, contentDescription =null )
-                })
+            SearchBar(onClick={})
+
+
 
 
 
