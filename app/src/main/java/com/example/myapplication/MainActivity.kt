@@ -81,8 +81,8 @@ class MainActivity : ComponentActivity() {
                         Surface(modifier=Modifier.fillMaxSize(), color = Color(0f,0f,0f,0.3f)) {
 
                         }
-                        SearchBar(onClick={isSearch=false})
 
+                        SearchBar(onClick={isSearch=false},viewModel=viewModel)
 
 
                     }
@@ -129,7 +129,7 @@ fun TextColumns(modifier:Modifier=Modifier,title:Int,author:Int){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(modifier:Modifier=Modifier,onClick:()->Unit){
+fun SearchBar(modifier:Modifier=Modifier,onClick:()->Unit,viewModel:PictureViewModel){
     var input by remember {
         mutableStateOf("")
     }
@@ -137,13 +137,13 @@ fun SearchBar(modifier:Modifier=Modifier,onClick:()->Unit){
 
 
         OutlinedTextField(leadingIcon = {
-            Icon(Icons.Default.Search, contentDescription =null,modifier=modifier.clickable(onClick=onClick) )
+            Icon(Icons.Default.Search, contentDescription =null )
         }, value = input, onValueChange ={input=it}, label = { Text(text = "Search art")},modifier= Modifier
             .background(Color(255, 255, 255))
             .fillMaxWidth(),
             trailingIcon = {
 
-                    Icon( Icons.Default.Close, contentDescription =null )
+                    Icon( Icons.Default.Close, contentDescription =null,modifier=modifier.clickable(onClick=onClick) )
 
 
             })
@@ -153,7 +153,13 @@ fun SearchBar(modifier:Modifier=Modifier,onClick:()->Unit){
                 if (text.startsWith(input) && input!="") {
                     Row(modifier= Modifier
                         .background(Color(255, 255, 255))
-                        .fillMaxWidth()) {
+                        .fillMaxWidth()
+                        .clickable {
+                            val ind=listOfPics.list.indexOf(it)
+                            viewModel.setPicId(ind)
+                            onClick()
+
+                        }) {
 
                         Text(text = text,modifier=Modifier.padding(8.dp))
                     }
@@ -168,12 +174,13 @@ fun SearchBar(modifier:Modifier=Modifier,onClick:()->Unit){
 @Preview(showBackground = true,showSystemUi=true)
 @Composable
 fun GreetingPreview() {
+
     MyApplicationTheme {
         Box(modifier = Modifier.fillMaxSize()) {
-            Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(60.dp)) {
+            Column(modifier=Modifier.padding(42.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(60.dp)) {
                 ImageContainer(res = R.drawable.the_scream)
                 TextColumns(title=R.string.scream, author = R.string.scream_author)
-                ButtonRows(changePositive = {}, changeNegative = {})
+                ButtonRows(changePositive = {}, changeNegative = {},modifier=Modifier.padding(bottom=32.dp))
 
             }
             FloatingActionButton(onClick = { /*TODO*/ },modifier= Modifier
@@ -181,10 +188,13 @@ fun GreetingPreview() {
                 .padding(end = 16.dp, bottom = 16.dp)) {
                 Icon(Icons.Default.Search, contentDescription =null )
             }
-                Surface(modifier=Modifier.fillMaxSize(), color = Color(0f,0f,0f,0.3f)) {
 
-                }
-            SearchBar(onClick={})
+            //    Surface(modifier=Modifier.fillMaxSize(), color = Color(0f,0f,0f,0.3f)) {
+
+               // }
+             //   SearchBar(onClick={})
+
+
 
 
 

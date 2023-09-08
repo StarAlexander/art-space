@@ -19,5 +19,11 @@ class PictureViewModel:ViewModel() {
             if (it==0) listOfPics.list.size-1 else it-1
         }
     }
+    fun setPicId(id:Int){
+        _pic.update{
+            id
+        }
+    }
+
 
 }
