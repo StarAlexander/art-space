@@ -24,13 +24,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -66,29 +69,44 @@ class MainActivity : ComponentActivity() {
                     mutableStateOf(false)
                 }
             MyApplicationTheme {
-                Box(modifier = Modifier.fillMaxSize()){
-
-                    Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(40.dp)) {
-                        ImageContainer(res = listOfPics.list[pic.value].id)
-                        TextColumns(title=listOfPics.list[pic.value].title,author=listOfPics.list[pic.value].author)
-                        ButtonRows(changePositive = {viewModel.changePositive()}, changeNegative = {viewModel.changeNegative()})
-
+                Scaffold(
+                    topBar={
+                        TopAppBar(title = {Text("Art space")})
+                    },
+                    floatingActionButton = {
+                        FloatingActionButton(onClick={isSearch=true},modifier=Modifier) {
+                            Icon(Icons.Default.Search,contentDescription = null)
+                        }
+                    },
+                    bottomBar = {
+                        BottomAppBar {
+                            ButtonRows(changePositive = {viewModel.changePositive()}, changeNegative = {viewModel.changeNegative()})
+                        }
                     }
-                    FloatingActionButton(onClick = { isSearch=true },modifier= Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(end = 16.dp, bottom = 16.dp)) {
-                        Icon(Icons.Default.Search, contentDescription =null )
-                    }
-                    if (isSearch){
-                        Surface(modifier=Modifier.fillMaxSize(), color = Color(0f,0f,0f,0.3f)) {
+                ) {
+                    Box(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(it)){
+
+                        Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(40.dp)) {
+                            ImageContainer(res = listOfPics.list[pic.value].id)
+                            TextColumns(title=listOfPics.list[pic.value].title,author=listOfPics.list[pic.value].author)
+
 
                         }
 
-                        SearchBar(onClick={isSearch=false},viewModel=viewModel)
+                        if (isSearch){
+                            Surface(modifier=Modifier.fillMaxSize(), color = Color(0f,0f,0f,0.3f)) {
+
+                            }
+
+                            SearchBar(onClick={isSearch=false},viewModel=viewModel)
 
 
+                        }
                     }
                 }
+
 
             }
         }
@@ -107,11 +125,11 @@ fun ImageContainer(modifier:Modifier=Modifier, @DrawableRes res:Int){
 
 @Composable
 fun ButtonRows(modifier:Modifier=Modifier,changePositive:()->Unit,changeNegative:()->Unit){
-    Row {
-        Button(onClick = changeNegative,modifier=modifier.padding(24.dp)) {
+    Row(horizontalArrangement = Arrangement.Center,modifier=Modifier.fillMaxWidth()) {
+        Button(onClick = changeNegative,modifier=modifier.padding(end=16.dp)) {
             Text("previous")
         }
-        Button(onClick = changePositive,modifier=modifier.padding(24.dp)) {
+        Button(onClick = changePositive,modifier=modifier.padding(start=16.dp)) {
             Text("next")
         }
     }
@@ -150,8 +168,8 @@ fun SearchBar(modifier:Modifier=Modifier,
                 Text(text = "Search art")
                     },
             modifier= Modifier
-            .background(Color(255, 255, 255))
-            .fillMaxWidth(),
+                .background(Color(255, 255, 255))
+                .fillMaxWidth(),
             trailingIcon = {
 
                     Icon( Icons.Default.Close, contentDescription =null,modifier=modifier.clickable(onClick=onClick) )
@@ -166,7 +184,7 @@ fun SearchBar(modifier:Modifier=Modifier,
                         .background(Color(255, 255, 255))
                         .fillMaxWidth()
                         .clickable {
-                            val ind=listOfPics.list.indexOf(it)
+                            val ind = listOfPics.list.indexOf(it)
                             viewModel.setPicId(ind)
                             onClick()
 
@@ -188,32 +206,35 @@ fun SearchBar(modifier:Modifier=Modifier,
 fun GreetingPreview() {
 
     MyApplicationTheme {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(modifier=Modifier.padding(42.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(40.dp)) {
-                ImageContainer(res = R.drawable.the_scream)
-                TextColumns(title=R.string.scream, author = R.string.scream_author)
-                ButtonRows(changePositive = {}, changeNegative = {},modifier=Modifier.padding(bottom=32.dp))
+        Scaffold(
+            topBar={
+                TopAppBar(title = {Text("Art space")})
+            },
+            floatingActionButton = {
+                FloatingActionButton(onClick={},modifier=Modifier) {
+                    Icon(Icons.Default.Search,contentDescription = null)
+                }
+            },
+            bottomBar = {
+                BottomAppBar {
+                    ButtonRows(changePositive = {}, changeNegative = {})
+                }}
+        ) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(it)){
+
+                Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(40.dp)) {
+                    ImageContainer(res = R.drawable.the_scream)
+                    TextColumns(title=R.string.scream,author=R.string.scream_author)
+
+
+                }
+
 
             }
-            FloatingActionButton(onClick = { /*TODO*/ },modifier= Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 16.dp, bottom = 16.dp)) {
-                Icon(Icons.Default.Search, contentDescription =null )
-            }
-
-            //    Surface(modifier=Modifier.fillMaxSize(), color = Color(0f,0f,0f,0.3f)) {
-
-               // }
-             //   SearchBar(onClick={})
-
-
-
-
-
-
-
-
         }
+
 
     }
 }
