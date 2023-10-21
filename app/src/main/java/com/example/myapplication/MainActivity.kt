@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -66,7 +67,8 @@ class MainActivity : ComponentActivity() {
                 }
             MyApplicationTheme {
                 Box(modifier = Modifier.fillMaxSize()){
-                    Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(60.dp)) {
+
+                    Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(40.dp)) {
                         ImageContainer(res = listOfPics.list[pic.value].id)
                         TextColumns(title=listOfPics.list[pic.value].title,author=listOfPics.list[pic.value].author)
                         ButtonRows(changePositive = {viewModel.changePositive()}, changeNegative = {viewModel.changeNegative()})
@@ -129,7 +131,9 @@ fun TextColumns(modifier:Modifier=Modifier,title:Int,author:Int){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(modifier:Modifier=Modifier,onClick:()->Unit,viewModel:PictureViewModel){
+fun SearchBar(modifier:Modifier=Modifier,
+              onClick:()->Unit,
+              viewModel:PictureViewModel){
     var input by remember {
         mutableStateOf("")
     }
@@ -137,8 +141,15 @@ fun SearchBar(modifier:Modifier=Modifier,onClick:()->Unit,viewModel:PictureViewM
 
 
         OutlinedTextField(leadingIcon = {
-            Icon(Icons.Default.Search, contentDescription =null )
-        }, value = input, onValueChange ={input=it}, label = { Text(text = "Search art")},modifier= Modifier
+            Icon(Icons.Default.Search,
+                contentDescription =null )
+        },
+            value = input,
+            onValueChange ={input=it},
+            label = {
+                Text(text = "Search art")
+                    },
+            modifier= Modifier
             .background(Color(255, 255, 255))
             .fillMaxWidth(),
             trailingIcon = {
@@ -150,7 +161,7 @@ fun SearchBar(modifier:Modifier=Modifier,onClick:()->Unit,viewModel:PictureViewM
         LazyColumn{
             items(listOfPics.list){
                 val text= stringResource(id = it.title)
-                if (text.startsWith(input) && input!="") {
+                if (text.lowercase().startsWith(input.lowercase()) && input!="") {
                     Row(modifier= Modifier
                         .background(Color(255, 255, 255))
                         .fillMaxWidth()
@@ -161,7 +172,8 @@ fun SearchBar(modifier:Modifier=Modifier,onClick:()->Unit,viewModel:PictureViewM
 
                         }) {
 
-                        Text(text = text,modifier=Modifier.padding(8.dp))
+                        Text(text = text,
+                            modifier=Modifier.padding(8.dp))
                     }
                 }
 
@@ -177,7 +189,7 @@ fun GreetingPreview() {
 
     MyApplicationTheme {
         Box(modifier = Modifier.fillMaxSize()) {
-            Column(modifier=Modifier.padding(42.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(60.dp)) {
+            Column(modifier=Modifier.padding(42.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(40.dp)) {
                 ImageContainer(res = R.drawable.the_scream)
                 TextColumns(title=R.string.scream, author = R.string.scream_author)
                 ButtonRows(changePositive = {}, changeNegative = {},modifier=Modifier.padding(bottom=32.dp))
