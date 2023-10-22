@@ -26,9 +26,11 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -44,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.colorspace.ColorModel
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -88,7 +91,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .padding(it)){
 
-                        Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(40.dp)) {
+                        Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                             ImageContainer(res = listOfPics.list[pic.value].id)
                             TextColumns(title=listOfPics.list[pic.value].title,author=listOfPics.list[pic.value].author)
 
@@ -97,7 +100,7 @@ class MainActivity : ComponentActivity() {
 
                         if (isSearch){
                             Surface(modifier=Modifier.fillMaxSize(), color = Color(0f,0f,0f,0.3f)) {
-
+                            
                             }
 
                             SearchBar(onClick={isSearch=false},viewModel=viewModel)
@@ -140,7 +143,7 @@ fun TextColumns(modifier:Modifier=Modifier,title:Int,author:Int){
     Column(modifier= modifier
         .fillMaxWidth()
         .padding(20.dp)
-        .background(color = Color(192, 199, 230))
+        .background(color=MaterialTheme.colorScheme.primary)
         .height(80.dp), verticalArrangement = Arrangement.SpaceAround) {
         Text(text = stringResource(id = title), fontSize = 30.sp,fontFamily= FontFamily.SansSerif,modifier=modifier.padding(start=5.dp))
         Text(text = stringResource(id = author), fontStyle = FontStyle.Normal, fontFamily = FontFamily.SansSerif, fontWeight= FontWeight.Bold,modifier=modifier.padding(5.dp))
@@ -224,7 +227,7 @@ fun GreetingPreview() {
                 .fillMaxSize()
                 .padding(it)){
 
-                Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(40.dp)) {
+                Column(modifier=Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                     ImageContainer(res = R.drawable.the_scream)
                     TextColumns(title=R.string.scream,author=R.string.scream_author)
 
